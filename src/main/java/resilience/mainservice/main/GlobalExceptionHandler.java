@@ -6,20 +6,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import resilience.mainservice.main.mail.MailSendException;
 import resilience.mainservice.main.payment.PaymentServiceErrorException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
-
-    @ExceptionHandler(MailSendException.class)
-    public ResponseEntity<String> handleMailSendException(MailSendException ex) {
-        logger.error("메일 전송 실패");
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("메일 전송 실패: " + ex.getMessage());
-    }
 
     @ExceptionHandler(PaymentServiceErrorException.class)
     public ResponseEntity<String> handlePaymentServiceErrorException(PaymentServiceErrorException ex) {
