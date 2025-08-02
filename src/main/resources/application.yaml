@@ -1,0 +1,24 @@
+server:
+  port: 8080
+
+# API 키별 분당 최대 요청 횟수 설정
+api:
+  requests-per-minute: 5 # 예시: 키 하나당 1분에 5번 요청 가능
+
+resilience4j:
+  ratelimiter:
+    instances:
+      mailServiceRateLimit:
+        # 기간(limitRefreshPeriod) 동안 허용되는 호출 수
+        limitForPeriod: 10 # 예: 60초에 10개 요청
+        # 제한을 재설정하는 주기
+        limitRefreshPeriod: 60s # 예: 60초
+        # 호출 허용을 기다리는 최대 시간 (0이면 즉시 실패)
+        timeoutDuration: 0 # 예: 대기 없이 즉시 실패
+  bulkhead:
+    instances:
+      mailServiceBulkhead:
+        # 동시에 허용되는 최대 호출 수
+        maxConcurrentCalls: 3 # 예: 최대 3개 동시 호출 허용
+        # 동시 호출 수가 꽉 찼을 때 대기하는 최대 시간 (0이면 즉시 실패)
+        maxWaitDuration: 0 # 예: 대기 없이 즉시 실패
